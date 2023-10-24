@@ -14,7 +14,7 @@ In addition, I also plan on implementing Raft Consensus into Go KVDB
     - Concurrenct/prevent race conditions
     - Transaction based Atomicity
 
-3. 
+3. implement Raft Consensus to make it a distributed database
 
 ## Changelog
 - 10/24/2023
