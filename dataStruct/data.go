@@ -5,3 +5,8 @@ type Person struct {
 	Age  int
 	Sex  string
 }
+
+type Data struct {
+	Key   string
+	Value []byte
+}

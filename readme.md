@@ -1,6 +1,7 @@
 # Go KVDB
 
-Go KVDB is a learning project for me to refresh on some database fundamentals.
+This is an implementation of a key-value database that is written in Go.
+
 In addition, I also plan on implementing Raft Consensus into Go KVDB
 
 ## Goals
@@ -15,6 +16,23 @@ In addition, I also plan on implementing Raft Consensus into Go KVDB
     - Transaction based Atomicity
 
 3. implement Raft Consensus to make it a distributed database
+
+## Todo
+- Implement file opening and closing
+- implement the kvStore to load data into memory/a map
+    - data will be a map with string keys, and []uint8 binary array as values. The binary array is a json
+- Implement serializing/deserializing data for writing and loading
+
+- (Reach goal)
+    - Implement a simple paging mechanism
+
+### Operations, initializations and destruction
+- Initialize, open file when application starts
+- load file into memory. 
+    - Will result in string keys, binary json values.
+    - While file is in memory, do operations
+- Close file when application ends
+    - Serialize data into bson
 
 ## Changelog
 - 10/24/2023
