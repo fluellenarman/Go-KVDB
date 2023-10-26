@@ -9,7 +9,9 @@ import (
 	"fmt"
 	data "here/dataStruct"
 	kv "here/kvStore"
-	client "here/testClient"
+	"os"
+
+	// client "here/testClient"
 	"reflect"
 
 	"gopkg.in/mgo.v2/bson"
@@ -17,10 +19,11 @@ import (
 
 func main() {
 	fmt.Println("main.go")
-	client.Init()
+	// client.Init()
 	kv.Init()
+	kv.Close()
 
-	testingBson()
+	// testingBson()
 	// testingJson()
 	// testingMap()
 }
@@ -70,7 +73,8 @@ func testingBson() {
 	fmt.Println(testData)
 
 	bsonData2, err := bson.Marshal(testData)
-
+	file, err := os.OpenFile("kvStore/data/data.db", os.O_RDWR|os.O_CREATE, 0644)
+	file.Write(bsonData2)
 	fmt.Println(reflect.TypeOf(bsonData2), bsonData2)
 
 	var deserialized2 data.Data
@@ -82,8 +86,6 @@ func testingBson() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// fmt.Println(deserialized)
-
 }
 
 func testingMap() {
