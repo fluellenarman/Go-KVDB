@@ -13,7 +13,7 @@ const fileName string = "kvStore/data/data.db"
 
 var file *os.File
 var err error
-var memory data.Data
+var memory data.KVmap
 
 // Open file for writing
 func Init() {

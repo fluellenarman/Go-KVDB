@@ -19,13 +19,34 @@ import (
 
 func main() {
 	fmt.Println("main.go")
+	kv.Main()
 	// client.Init()
-	kv.Init()
-	kv.Close()
+	// kv.Init()
+	// kv.Close()
+	// testingKVmap()
 
 	// testingBson()
 	// testingJson()
 	// testingMap()
+}
+
+func testingKVmap() {
+	fmt.Println("\nmain.go : testingByteArrayMap() ")
+	fmt.Println("KVmap writing and loading")
+
+	testData1 := data.ValueTuple{
+		DataType: "string",
+		Value:    []byte("Hello world"),
+	}
+	fmt.Println("data being loaded onto KVmap in memory", testData1)
+
+	testKVmap := data.KVmap{
+		MemoMap: make(map[string]data.ValueTuple),
+	}
+
+	testKVmap.MemoMap["key1"] = testData1
+	fmt.Println(testKVmap.MemoMap["key1"])
+	fmt.Println(string(testKVmap.MemoMap["key1"].Value))
 }
 
 func testingJson() {
@@ -66,9 +87,9 @@ func testingBson() {
 	}
 	fmt.Println(reflect.TypeOf(bsonData), bsonData)
 
-	testData := data.Data{
-		Key:   "Alice",
-		Value: bsonData,
+	testData := data.ValueTuple{
+		DataType: "Alice",
+		Value:    bsonData,
 	}
 	fmt.Println(testData)
 
@@ -77,7 +98,7 @@ func testingBson() {
 	file.Write(bsonData2)
 	fmt.Println(reflect.TypeOf(bsonData2), bsonData2)
 
-	var deserialized2 data.Data
+	var deserialized2 data.ValueTuple
 	err = bson.Unmarshal(bsonData2, &deserialized2)
 	fmt.Println(deserialized2)
 
