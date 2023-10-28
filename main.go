@@ -70,6 +70,19 @@ func testingJson() {
 		fmt.Println(err)
 	}
 	fmt.Println(deserialized)
+	fmt.Println("\n next test")
+
+	jsonData2, err := json.Marshal("Test string 2")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(jsonData2)
+	var deserialized2 string
+	err = json.Unmarshal(jsonData2, &deserialized2)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(deserialized2)
 }
 
 func testingBson() {
