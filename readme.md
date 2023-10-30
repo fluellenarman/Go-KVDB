@@ -1,30 +1,30 @@
 # Go KVDB
 
-This is an implementation of a key-value database that is written in Go.
+This is an implementation of a hash based key-value database that is written in Go.
 
-In addition, I also plan on implementing Raft Consensus into Go KVDB
+In addition, I also plan on implementing Raft Consensus to make it a fault tolerant distributed key-value database
 
 ## Goals
 1. Create a key value store in Go
     - Hashmap implementation
     - Persist data in binary JSON
-    
-2. Transition Go kvdb a DBMS 
+
+2. implement Raft Consensus to make it a distributed database
+
+3. Optional Goals
     - create CRUD API's for IPC
-    - create a TKINTER GUI for local management
-    - Concurrenct/prevent race conditions
+    - Concurrent/prevent race conditions
     - Transaction based Atomicity
 
-3. implement Raft Consensus to make it a distributed database
-
 ## Todo
-- Implement file opening and closing
-- implement the kvStore to load data into memory/a map
-    - data will be a map with string keys, and []uint8 binary array as values. The binary array is a json
-- Implement serializing/deserializing data for writing and loading
-
-- (Reach goal)
-    - Implement a simple paging mechanism
+- create a test system for the client to do large amounts of operations to the database.
+    - This is for eventually testing faul tolerance of a distributed kv-store.
+- Create an API for the KVstore for CRUD interoperability
+- implement delete, for deleting key-value pairs
+- implement snapshots, for writing data in memory to storage.
+- implement atomic transactions
+- implement Raft Consensus Algorithm
+    - Dockerize the project
 
 ### Operations, initializations and destruction
 - Initialize, open file when application starts
@@ -35,6 +35,11 @@ In addition, I also plan on implementing Raft Consensus into Go KVDB
     - Serialize data into bson
 
 ## Changelog
-- 10/24/2023
-
-Set up project, preliminary prototyping
+### 10/29/2023
+- Added hash based scheme for getting/setting data
+    - keys are queried through a hash and Value is stored as a byte slice with a tag that states the byte slice's data type.
+    - Data that is in storage is loaded into memory and accessed through a hash scheme.
+- Added functionality to get and set integers and strings.
+- Added conversion functions for serializing and deserializing int, int arrays, strings, string arrays from and to binary 
+### 10/24/2023
+- Set up project, preliminary prototyping

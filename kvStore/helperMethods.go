@@ -6,20 +6,19 @@ import (
 	"fmt"
 )
 
-// int
-func intToBytes(num int) []byte {
+// IntToBytes converts an integer to a byte array.
+func IntToBytes(num int) []byte {
 	byteArray := make([]byte, 4)
 	binary.BigEndian.PutUint32(byteArray, uint32(num))
 	return byteArray
 }
 
+// bytesToInt converts a byte array to an integer.
 func bytesToInt(byteArray []byte) int {
 	return int(binary.BigEndian.Uint32(byteArray))
 }
 
-//
-
-// int array
+// intArrToBytes converts an integer array to a byte array.
 func intArrToBytes(arr []int) []byte {
 	byteCount := len(arr) * 4 // Assuming 32-bit integers, hence 4 bytes each
 	byteSlice := make([]byte, byteCount)
@@ -31,6 +30,7 @@ func intArrToBytes(arr []int) []byte {
 	return byteSlice
 }
 
+// bytesToIntArr converts a byte array to an integer array.
 func bytesToIntArr(byteSlice []byte) []int {
 	intCount := len(byteSlice) / 4 // Assuming 32-bit integers, hence 4 bytes each
 	intArr := make([]int, intCount)
@@ -42,20 +42,18 @@ func bytesToIntArr(byteSlice []byte) []int {
 	return intArr
 }
 
-//
-
-// string
-func stringToBytes(str string) []byte {
+// StringToBytes converts a string to a byte array.
+func StringToBytes(str string) []byte {
+	fmt.Println("StringToBytes- ", str)
 	return []byte(str)
 }
 
-func bytesToString(byteSlice []byte) string {
+// BytesToString converts a byte array to a string.
+func BytesToString(byteSlice []byte) string {
 	return string(byteSlice)
 }
 
-//
-
-// string array
+// stringArrToBytes converts a string array to a byte array.
 func stringArrToBytes(strs []string) []byte {
 	//using json because it's simpler, but it's not the most efficient
 	jsonStr, err := json.Marshal(strs)
@@ -65,6 +63,7 @@ func stringArrToBytes(strs []string) []byte {
 	return jsonStr
 }
 
+// bytesToStringArr converts a byte array to a string array.
 func bytesToStringArr(byteSlice []byte) []string {
 	// using json because it's simpler, but it's not the most efficient
 	var strs []string
@@ -75,8 +74,7 @@ func bytesToStringArr(byteSlice []byte) []string {
 	return strs
 }
 
-//
-
+// Main is the main function for helperMethods.go.
 func Main() {
 	fmt.Println("helperMethods.go : main()")
 	// testingIntBytes()
@@ -85,13 +83,15 @@ func Main() {
 	// testingStringArrBytes()
 }
 
+// testingStringBytes is a helper function to test stringToBytes and bytesToString functions.
 func testingStringBytes() {
-	byteArr := stringToBytes("My Name is John 123 !@#")
+	byteArr := StringToBytes("My Name is John 123 !@#")
 	fmt.Println(byteArr)
-	testStr := bytesToString(byteArr)
+	testStr := BytesToString(byteArr)
 	fmt.Println(testStr)
 }
 
+// testingStringArrBytes is a helper function to test stringArrToBytes and bytesToStringArr functions.
 func testingStringArrBytes() {
 	strArr := []string{"My", "Name", "is", "John", "123", "!@#"}
 	byteArr := stringArrToBytes(strArr)
@@ -100,13 +100,15 @@ func testingStringArrBytes() {
 	fmt.Println(testStrArr)
 }
 
+// testingIntBytes is a helper function to test IntToBytes and bytesToInt functions.
 func testingIntBytes() {
-	byteArr := intToBytes(2500)
+	byteArr := IntToBytes(2500)
 	fmt.Println(byteArr)
 	testInt := bytesToInt(byteArr)
 	fmt.Println(testInt)
 }
 
+// testingIntArrBytes is a helper function to test intArrToBytes and bytesToIntArr functions.
 func testingIntArrBytes() {
 	intArr := []int{1, 2, 3, 4, 5}
 	byteArr := intArrToBytes(intArr)

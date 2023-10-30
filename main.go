@@ -9,6 +9,7 @@ import (
 	"fmt"
 	data "here/dataStruct"
 	kv "here/kvStore"
+	client "here/testClient"
 	"os"
 
 	// client "here/testClient"
@@ -19,15 +20,16 @@ import (
 
 func main() {
 	fmt.Println("main.go")
-	kv.Main()
-	// client.Init()
-	// kv.Init()
-	// kv.Close()
-	// testingKVmap()
+	// kv.Main()
 
-	// testingBson()
-	// testingJson()
-	// testingMap()
+	// kv.SerializeValue([]int{1, 2, 3})
+	kv.Init()
+	client.Set("key1", "Hello World")
+	client.Set("key2", 123)
+	client.Get("key1")
+	client.Get("key2")
+	kv.Close()
+
 }
 
 func testingKVmap() {
