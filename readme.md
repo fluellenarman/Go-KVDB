@@ -17,10 +17,10 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Transaction based Atomicity
 
 ## Todo
+- look into changing KVmap from map[string]ValueTuple to map[string]interface{}
 - create a test system for the client to do large amounts of operations to the database.
     - This is for eventually testing fault tolerance of a distributed kv-store.
 - Create an API for the KVstore for CRUD interoperability
-- implement delete, for deleting key-value pairs
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
@@ -35,11 +35,13 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Serialize data into bson
 
 ## Changelog
+### 11/3/2023
+- Added operation for user to delete key value pairs.
 ### 10/29/2023
 - Added hash based scheme for getting/setting data
     - keys are queried through a hash and Value is stored as a byte slice with a tag that states the byte slice's data type.
     - Data that is in storage is loaded into memory and accessed through a hash scheme.
-- Added functionality to get and set integers and strings.
+- Added operations to get and set integers and strings.
 - Added conversion functions for serializing and deserializing int, int arrays, strings, string arrays from and to binary 
 ### 10/24/2023
 - Set up project, preliminary prototyping
