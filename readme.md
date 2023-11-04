@@ -18,7 +18,7 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
 
 ## Todo
 - create a test system for the client to do large amounts of operations to the database.
-    - This is for eventually testing faul tolerance of a distributed kv-store.
+    - This is for eventually testing fault tolerance of a distributed kv-store.
 - Create an API for the KVstore for CRUD interoperability
 - implement delete, for deleting key-value pairs
 - implement snapshots, for writing data in memory to storage.

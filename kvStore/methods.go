@@ -113,8 +113,10 @@ func get() {
 
 }
 
-func delete() {
-
+func DeletePair(key string) {
+	fmt.Println("kvStore/methods.go : delete()")
+	fmt.Println("delete() deleting", key)
+	delete(memory.MemoMap, key)
 }
 
 func errorCatch(err error) {

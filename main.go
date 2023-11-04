@@ -29,7 +29,6 @@ func main() {
 	client.Get("key1")
 	client.Get("key2")
 	kv.Close()
-
 }
 
 func testingKVmap() {
