@@ -6,12 +6,7 @@ type Person struct {
 	Sex  string
 }
 
-type ValueTuple struct {
-	DataType string // represents datatype of value
-	Value    []byte
-}
-
 // string key, tuple(string, []byte)
 type KVmap struct {
-	MemoMap map[string]ValueTuple
+	MemoMap map[string]interface{}
 }

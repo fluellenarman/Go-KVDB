@@ -17,7 +17,6 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Transaction based Atomicity
 
 ## Todo
-- look into changing KVmap from map[string]ValueTuple to map[string]interface{}
 - create a test system for the client to do large amounts of operations to the database.
     - This is for eventually testing fault tolerance of a distributed kv-store.
 - Create an API for the KVstore for CRUD interoperability
@@ -28,13 +27,18 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
 
 ### Operations, initializations and destruction
 - Initialize, open file when application starts
-- load file into memory. 
-    - Will result in string keys, binary json values.
+- load BSON file into memory. 
+    - Will result in string keys, any datatype.
     - While file is in memory, do operations
 - Close file when application ends
     - Serialize data into bson
 
 ## Changelog
+### 11/5/2023
+- Simplified operations by changing KVmap to map[string]interface{}
+    - This means that dev won't have to add a use case for each data type serializing and deserializing
+- deleted test functions and methods made obsoleted by changing KVmap's structure.
+- renamed data.db to data.bson
 ### 11/3/2023
 - Added operation for user to delete key value pairs.
 ### 10/29/2023
