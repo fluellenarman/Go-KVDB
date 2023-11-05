@@ -20,6 +20,7 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
 - create a test system for the client to do large amounts of operations to the database.
     - This is for eventually testing fault tolerance of a distributed kv-store.
 - Create an API for the KVstore for CRUD interoperability
+- Implement testFolder for unit testing functions
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
