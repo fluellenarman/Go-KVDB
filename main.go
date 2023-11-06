@@ -11,11 +11,13 @@ import (
 	// client "here/testClient"
 )
 
+const fileName string = "kvStore/data/test1.bson"
+
 func main() {
 	fmt.Println("main.go")
 	// kv.Main()
 
-	kv.Init()
+	kv.Init(fileName)
 	client.Set("key1", "Hello World")
 	client.Set("key2", 123)
 	client.Set("key3", 321)
