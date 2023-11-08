@@ -16,11 +16,20 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Concurrent/prevent race conditions
     - Transaction based Atomicity
 
+## How to test
+### test everything
+```
+go test ./... cover
+```
+### individual unit tests
+```
+go test ./kvStore/
+```
+
 ## Todo
 - create a test system for the client to do large amounts of operations to the database.
     - This is for eventually testing fault tolerance of a distributed kv-store.
 - Create an API for the KVstore for CRUD interoperability
-- Implement testFolder for unit testing functions
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
@@ -35,6 +44,9 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Serialize data into bson
 
 ## Changelog
+### 11/7/2023
+- Created unit tests for operations.go
+- Also created test folder "tests" for future general testing
 ### 11/5/2023
 - Simplified operations by changing KVmap to map[string]interface{}
     - This means that dev won't have to add a use case for each data type serializing and deserializing
