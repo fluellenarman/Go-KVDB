@@ -17,7 +17,6 @@ var memory data.KVmap
 
 // Open file and load data into memory
 func Init(fileNameInput string) string {
-	fmt.Println("operations.go : Init()")
 	fileName = fileNameInput
 	var state string
 
@@ -29,7 +28,7 @@ func Init(fileNameInput string) string {
 	// errorCatch(err)
 	// fmt.Println(n)
 	dataByte := buffer[:n]
-	fmt.Println("operations.go : Init() dataBytes\n", dataByte)
+	// fmt.Println("operations.go : Init() dataBytes\n", dataByte)
 
 	if (dataByte != nil) && (n != 0) {
 		// load data into memory
@@ -52,12 +51,12 @@ func Init(fileNameInput string) string {
 func writeToStorage(memory data.KVmap) {
 	file.Close()
 	file, err = os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-	fmt.Println("operations.go : writeToStorage() memory\n", memory)
+	// fmt.Println("operations.go : writeToStorage() memory\n", memory)
 	//serialize memory before writing to storage
 	bsonData, err := bson.Marshal(memory)
 	errorCatch(err)
 
-	fmt.Println("writeToStorage() bsonData\n", bsonData)
+	// fmt.Println("writeToStorage() bsonData\n", bsonData)
 	n, _ := file.Write(bsonData)
 	fmt.Println("writeToStorage() wrote ", n, " bytes to storage")
 

@@ -11,7 +11,7 @@ import (
 	// client "here/testClient"
 )
 
-const fileName string = "kvStore/data/test1.bson"
+const fileName string = "kvStore/data/test2.bson"
 
 func main() {
 	fmt.Println("main.go")
