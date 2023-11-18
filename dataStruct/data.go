@@ -10,3 +10,8 @@ type Person struct {
 type KVmap struct {
 	MemoMap map[string]interface{}
 }
+
+type KVpair struct {
+	Key   string
+	Value interface{}
+}
