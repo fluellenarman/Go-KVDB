@@ -67,10 +67,10 @@ go test ./kvStore/
 ## Changelog
 ### 11/19/2023
 - Created dockerized distributed prototype in javascript. Is in another repo.
-- Implemented a server to that will listen for GET, SET, and DELETE requests.
+- Implemented a server that will listen for GET, SET, and DELETE requests.
     - will only take requests whose data is in the format of data.KVpair
     - implemented a custom datatype for sending requests to the kvStore server (data.KVpair)
-- Implemented CLI tools for GET, SET, and DELETE operations
+- Implemented a CLI client for GET, SET, and DELETE operations
     - set can only set 1 word values with no spaces, and will always be interpretted as a string.
     - will fix at a later date.
 - project can now only be run in server mode or client mode
