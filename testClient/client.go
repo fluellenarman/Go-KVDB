@@ -7,7 +7,6 @@ import (
 	kv "here/kvStore"
 	"io"
 	"net/http"
-	"strings"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -21,32 +20,28 @@ func encodeBSON(input data.KVpair) []byte {
 	return bsonData
 }
 
-func extractParams(input string) (string, string) {
-	// Extract command(key, valueType, value)
-	// extract command - USER NOTES, be aware fof whitespaces
-	var command, params string
-	fmt.Println(input)
-	if strings.HasPrefix(input, "get(") && strings.HasSuffix(input, ")") {
-		fmt.Println("is get command")
-		// fmt.Println(input[4 : len(input)-1])
-		command = "get"
-		params = input[4 : len(input)-1]
-	}
-
-	return command, params
-}
-
-func SendReq() {
+// method, key, data
+func SendReq(method string, param1 string, param2 string) {
 	url := "http://localhost:8080/"
 
-	var data data.KVpair
-	data.Key = "key1"
-	data.Value = "Hello World From client.go!"
+	var myKVpair data.KVpair
+	// fmt.Println("param1", param1, "param2", param2)
+	myKVpair.Key = param1
+	myKVpair.Value = param2
 
-	bsonData := encodeBSON(data)
-	// fmt.Println(bsonData)
+	// fmt.Println("myKVpair", myKVpair)
 
-	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(bsonData))
+	bsonData := encodeBSON(myKVpair)
+	fmt.Println(bsonData)
+
+	var test data.KVpair
+	err := bson.Unmarshal(bsonData, &test)
+	if err != nil {
+		fmt.Println("Error unmarshalling data")
+	}
+	// fmt.Println("test", test)
+
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(bsonData))
 	errorHandling(err)
 
 	resp, err := http.DefaultClient.Do(req)

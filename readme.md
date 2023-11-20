@@ -12,9 +12,30 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
 2. implement Raft Consensus to make it a distributed database
 
 3. Optional Goals
-    - create CRUD API's for IPC
     - Concurrent/prevent race conditions
     - Transaction based Atomicity
+## How to run
+### client mode
+This will start the CLI client and server. The CLI client will take commands to send to the database.
+```
+go run main.go client
+```
+#### CLI client commands
+will retrieve the value paired with the key.
+If no value is paired with the key, server will notify client of a failure
+```
+get key1
+```
+
+Will post the key and it's paired value into the database. If the key already exists, the key value pair will update to the already sent key
+```
+set key1 value1
+```
+
+Will delete the key value pair in the database. If the key does not exist in the database, the databse will no op and continue as normal.
+```
+delete key1
+```
 
 ## How to test
 ### test everything
@@ -44,6 +65,17 @@ go test ./kvStore/
     - Serialize data into bson
 
 ## Changelog
+### 11/19/2023
+- Created dockerized distributed prototype in javascript. Is in another repo.
+- Implemented a server to that will listen for GET, SET, and DELETE requests.
+    - will only take requests whose data is in the format of data.KVpair
+    - implemented a custom datatype for sending requests to the kvStore server (data.KVpair)
+- Implemented CLI tools for GET, SET, and DELETE operations
+    - set can only set 1 word values with no spaces, and will always be interpretted as a string.
+    - will fix at a later date.
+- project can now only be run in server mode or client mode
+    - client mode will start the server and the CLI tool to take in operations and send them to the database.
+    - server mode is not yet implemented.
 ### 11/7/2023
 - Created unit tests for operations.go
 - Also created test folder "tests" for future general testing

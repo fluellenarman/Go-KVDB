@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	kv "here/kvStore"
 	client "here/testClient"
 	"os"
 	// client "here/testClient"
@@ -29,11 +30,13 @@ func main() {
 }
 
 func clientMode() {
-	// go kv.Main()
+	kv.Init("kvStore/data/test2.bson")
+	go kv.Main()
 	input := client.CLI_input()
 	for input != "exit" {
 		fmt.Println("client()", input)
 		input = client.CLI_input()
+		kv.Close()
 	}
 	// client.SendReq()
 }
