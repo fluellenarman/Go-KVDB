@@ -32,7 +32,7 @@ func SendReq(method string, param1 string, param2 string) {
 	// fmt.Println("myKVpair", myKVpair)
 
 	bsonData := encodeBSON(myKVpair)
-	fmt.Println(bsonData)
+	// fmt.Println("bsonData->", bsonData)
 
 	var test data.KVpair
 	err := bson.Unmarshal(bsonData, &test)
@@ -41,7 +41,25 @@ func SendReq(method string, param1 string, param2 string) {
 	}
 	// fmt.Println("test", test)
 
+	fmt.Println("Sending request to server...")
+	fmt.Println("method:", method, "url:", url)
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(bsonData))
+	errorHandling(err)
+
+	resp, err := http.DefaultClient.Do(req)
+	errorHandling(err)
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	errorHandling(err)
+
+	fmt.Println("Response:", string(body))
+}
+
+func sendMiscReq(method string) {
+	url := "http://localhost:8080/"
+	fmt.Println("In sendMiscReq :", method)
+	req, err := http.NewRequest(method, url, nil)
 	errorHandling(err)
 
 	resp, err := http.DefaultClient.Do(req)

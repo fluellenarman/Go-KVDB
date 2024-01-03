@@ -41,5 +41,9 @@ func extractInfo(input string) {
 	case "delete":
 		fmt.Println("in delete, 1 param")
 		SendReq("DELETE", command[1], "")
+	case "close_db":
+		fmt.Println("in close_db, 0 params")
+		// SendReq("CLOSE_SERVER", command[1], "")
+		sendMiscReq("CLOSE_DB")
 	}
 }

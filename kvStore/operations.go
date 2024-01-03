@@ -23,7 +23,7 @@ func Init(fileNameInput string) string {
 	file, err = os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0644)
 	errorCatch(err)
 
-	buffer := make([]byte, 1024)
+	buffer := make([]byte, 1024*1024)
 	n, err := file.Read(buffer)
 	// errorCatch(err)
 	// fmt.Println(n)
@@ -49,7 +49,7 @@ func Init(fileNameInput string) string {
 }
 
 func writeToStorage(memory data.KVmap) {
-	file.Close()
+	// file.Close()
 	file, err = os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	// fmt.Println("operations.go : writeToStorage() memory\n", memory)
 	//serialize memory before writing to storage

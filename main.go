@@ -13,9 +13,7 @@ import (
 )
 
 func main() {
-	fmt.Println("main.go")
-	fmt.Println(os.Args[1:])
-	fmt.Println(len(os.Args))
+	fmt.Println("\nmain.go:", os.Args[1:], len(os.Args))
 	if len(os.Args) != 2 {
 		printError()
 	} else if os.Args[1] == "client" {
@@ -30,30 +28,16 @@ func main() {
 }
 
 func clientMode() {
-	kv.Init("kvStore/data/test2.bson")
-	go kv.Main()
+	// kv.Init("kvStore/data/test2.bson")
 	input := client.CLI_input()
 	for input != "exit" {
-		fmt.Println("client()", input)
 		input = client.CLI_input()
-		kv.Close()
 	}
-	// client.SendReq()
 }
 
 func serverMode() {
-	// kv.Main()
-}
-
-func testClientMode() {
-	// kv.Init(fileName)
-	// client.Set("key1", "Hello World")
-	// client.Set("key2", 123)
-	// client.Set("key3", 321)
-	// client.Set("key4", "Goodbye World")
-	// client.Get("key1")
-	// client.Get("key2")
-	// kv.Close()
+	go kv.Init("kvStore/data/test2.bson")
+	kv.Main()
 }
 
 func printError() {
