@@ -16,7 +16,7 @@ In addition, I also plan on implementing Raft Consensus to make it a fault toler
     - Transaction based Atomicity
 ## How to run
 ### client mode
-This will start the CLI client and server. The CLI client will take commands to send to the database.
+This will start the CLI client. The CLI client will take commands to send to the database.
 ```
 go run main.go client
 ```
@@ -37,7 +37,30 @@ Will delete the key value pair in the database. If the key does not exist in the
 delete key1
 ```
 
-## How to test
+#### Closing the kvdb
+the KVDB currently does not yet support automatic writing to storage. To close the KVDB and write what's in memory to storage, run the below command
+```
+close_db
+```
+
+#### exiting client mode
+Be sure to close the KVDB before exiting client mode as the KVDB will only write to storage after closing the database
+```
+exit
+```
+
+### Server Mode
+This will start the KVDB server. The kvdb will do operations through the server's API. 
+```
+go run main.go server
+```
+
+## Docker commands
+```
+docker build -t testkvdb .
+docker run -p 8080:8080 testkvdb
+```
+## How to test code coverage
 ### test everything
 ```
 go test ./... cover
@@ -54,7 +77,7 @@ go test ./kvStore/
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
-    - Dockerize the project
+    - implement a log for a singular node that can later be extended for Raft Consensus
 
 ### Operations, initializations and destruction
 - Initialize, open file when application starts
@@ -65,6 +88,12 @@ go test ./kvStore/
     - Serialize data into bson
 
 ## Changelog
+### 1/2/2023
+- Dockerized the project to run a single instance of a server kvdb node.
+    - server mode now implemented and can be run locally as a seperate process or on a docker container.
+- Fixed bug in that server would crash if getting a non-string value
+- Implemented a function to remotely close the KVDB.
+
 ### 11/19/2023
 - Created dockerized distributed prototype in javascript. Is in another repo.
 - Implemented a server that will listen for GET, SET, and DELETE requests.
