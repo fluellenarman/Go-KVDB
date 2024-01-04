@@ -43,15 +43,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 		// fmt.Fprintf(w, "GET")
 	case http.MethodPost:
-		fmt.Fprintf(w, "POST Sucessful")
 		Put(data.Key, data.Value)
+		dataVal := convertValToString(data.Value)
+		appendLogEntry("SET " + data.Key + " " + dataVal)
+
+		fmt.Fprintf(w, "POST Sucessful")
 	case http.MethodDelete:
-		fmt.Fprintf(w, "DELETE")
+		dataVal := convertValToString(data.Value)
+		appendLogEntry("DELETE " + data.Key + " " + dataVal)
 		DeletePair(data.Key)
+
+		fmt.Fprintf(w, "DELETE")
 	case "CLOSE_DB":
 		fmt.Println("closing server..")
 		Close()
 		fmt.Fprintf(w, "server's database is closed")
+		fmt.Println(state)
 	default:
 		fmt.Println("default")
 		fmt.Fprintf(w, "default")

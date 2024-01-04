@@ -37,6 +37,7 @@ func clientMode() {
 
 func serverMode() {
 	go kv.Init("kvStore/data/test2.bson")
+	go kv.InitRaft()
 	kv.Main()
 }
 
