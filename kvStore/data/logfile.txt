@@ -1,0 +1,8 @@
+0 SET key5 val5
+0 SET key6 val6
+0 SET key5 toBeDeleted
+0 DELETE key5 
+0 SET key6 toBeDeleted
+0 DELETE key6 
+0 SET key5 newVal5
+0 SET key6 newVal6

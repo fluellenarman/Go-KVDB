@@ -46,12 +46,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Put(data.Key, data.Value)
 		dataVal := convertValToString(data.Value)
 		appendLogEntry("SET " + data.Key + " " + dataVal)
-
+		writeLogToStorage()
 		fmt.Fprintf(w, "POST Sucessful")
 	case http.MethodDelete:
 		dataVal := convertValToString(data.Value)
 		appendLogEntry("DELETE " + data.Key + " " + dataVal)
 		DeletePair(data.Key)
+		writeLogToStorage()
 
 		fmt.Fprintf(w, "DELETE")
 	case "CLOSE_DB":
