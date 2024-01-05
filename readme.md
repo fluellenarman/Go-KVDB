@@ -77,7 +77,7 @@ go test ./kvStore/
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
-    - implement a log for a singular node that can later be extended for Raft Consensus
+    - Dockerize multiple instances of the server and have them communicate with each other.
 
 ### Operations, initializations and destruction
 - Initialize, open file when application starts
@@ -88,6 +88,11 @@ go test ./kvStore/
     - Serialize data into bson
 
 ## Changelog
+### 1/4/2023
+- Implemented a log for a singular node. Will later extend this for Raft Consensus.
+    - Log is written in plaintext.
+    - Every PUT and DELETE will be logged.
+    - The log can be both loaded into memory and written in storage.
 ### 1/2/2023
 - Dockerized the project to run a single instance of a server kvdb node.
     - server mode now implemented and can be run locally as a seperate process or on a docker container.
