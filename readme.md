@@ -77,7 +77,7 @@ go test ./kvStore/
 - implement snapshots, for writing data in memory to storage.
 - implement atomic transactions
 - implement Raft Consensus Algorithm
-    - implement a log for a singular node that can later be extended for Raft Consensus
+    - Dockerize multiple instances of the server and have them communicate with each other.
 
 ### Operations, initializations and destruction
 - Initialize, open file when application starts
