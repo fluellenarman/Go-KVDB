@@ -21,6 +21,7 @@ func main() {
 		clientMode()
 	} else if os.Args[1] == "server" {
 		fmt.Println("Running server mode")
+		// fmt.Println(os.Args[2])
 		serverMode()
 	} else {
 		printError()

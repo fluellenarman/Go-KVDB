@@ -22,7 +22,7 @@ func encodeBSON(input data.KVpair) []byte {
 
 // method, key, data
 func SendReq(method string, param1 string, param2 string) {
-	url := "http://localhost:8080/"
+	url := "http://localhost:8081/"
 
 	var myKVpair data.KVpair
 	// fmt.Println("param1", param1, "param2", param2)
@@ -48,16 +48,20 @@ func SendReq(method string, param1 string, param2 string) {
 
 	resp, err := http.DefaultClient.Do(req)
 	errorHandling(err)
-	defer resp.Body.Close()
+	// defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	errorHandling(err)
+	if err == nil {
+		body, err := io.ReadAll(resp.Body)
+		errorHandling(err)
 
-	fmt.Println("Response:", string(body))
+		fmt.Println("Response:", string(body))
+	} else {
+		fmt.Println("No response from server")
+	}
 }
 
 func sendMiscReq(method string) {
-	url := "http://localhost:8080/"
+	url := "http://localhost:8081/"
 	fmt.Println("In sendMiscReq :", method)
 	req, err := http.NewRequest(method, url, nil)
 	errorHandling(err)
@@ -97,6 +101,7 @@ func Init() {
 
 func errorHandling(err error) {
 	if err != nil {
+		fmt.Println("client.go : errorHandling()")
 		fmt.Println("Error:", err)
 	}
 }
