@@ -56,9 +56,16 @@ go run main.go server
 ```
 
 ## Docker commands
+To build and run a single docker container
+
 ```
 docker build -t testkvdb .
 docker run -p 8080:8080 testkvdb
+```
+
+To build multiple docker containers and run them
+```
+docker compose up -d
 ```
 ## How to test code coverage
 ### test everything
@@ -88,12 +95,16 @@ go test ./kvStore/
     - Serialize data into bson
 
 ## Changelog
-### 1/4/2023
+### 2/11/2024
+- Created a docker-compose.yml file
+    - to build and run multiple docker containers, it's `docker compose up -d`
+- Fixed bug where client will crash if it sends a request and does not receives a response from the server
+### 1/4/2024
 - Implemented a log for a singular node. Will later extend this for Raft Consensus.
     - Log is written in plaintext.
     - Every PUT and DELETE will be logged.
     - The log can be both loaded into memory and written in storage.
-### 1/2/2023
+### 1/2/2024
 - Dockerized the project to run a single instance of a server kvdb node.
     - server mode now implemented and can be run locally as a seperate process or on a docker container.
 - Fixed bug in that server would crash if getting a non-string value

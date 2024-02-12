@@ -7,6 +7,8 @@ import (
 	kv "here/kvStore"
 	"io"
 	"net/http"
+	"math/rand"
+	"time"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -22,7 +24,9 @@ func encodeBSON(input data.KVpair) []byte {
 
 // method, key, data
 func SendReq(method string, param1 string, param2 string) {
-	url := "http://localhost:8080/"
+	randomNum := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
+	urlList := []string{"8080", "8081", "8082", "8083", "8084"}
+	var url string = "http://localhost:" + urlList[randomNum] + "/"
 
 	var myKVpair data.KVpair
 	// fmt.Println("param1", param1, "param2", param2)
@@ -48,28 +52,40 @@ func SendReq(method string, param1 string, param2 string) {
 
 	resp, err := http.DefaultClient.Do(req)
 	errorHandling(err)
-	defer resp.Body.Close()
+	
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := io.ReadAll(resp.Body)
+		errorHandling(err)
 
-	body, err := io.ReadAll(resp.Body)
-	errorHandling(err)
-
-	fmt.Println("Response:", string(body))
+		fmt.Println("Response:", string(body))
+	} else {
+		fmt.Println("No response from server")
+	}
 }
 
 func sendMiscReq(method string) {
-	url := "http://localhost:8080/"
+	randomNum := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
+	urlList := []string{"8080", "8081", "8082", "8083", "8084"}
+	var url string = "http://localhost:" + urlList[randomNum] + "/"
+	
 	fmt.Println("In sendMiscReq :", method)
 	req, err := http.NewRequest(method, url, nil)
 	errorHandling(err)
 
 	resp, err := http.DefaultClient.Do(req)
 	errorHandling(err)
-	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	errorHandling(err)
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := io.ReadAll(resp.Body)
+		errorHandling(err)
+		fmt.Println("Response:", string(body))
+	} else {
+		fmt.Println("No response from server")
+	}
 
-	fmt.Println("Response:", string(body))
+
 }
 
 func Set(key string, value interface{}) {
@@ -97,6 +113,7 @@ func Init() {
 
 func errorHandling(err error) {
 	if err != nil {
+		fmt.Println("client.go : errorHandling()")
 		fmt.Println("Error:", err)
 	}
 }
