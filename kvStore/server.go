@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"math/rand"
+	"time"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -13,6 +15,7 @@ import (
 // Main is the main function for the kvStore
 func Main() {
 	fmt.Println("kvStore server runnning...")
+	go sendHeartbeat()
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 }
@@ -60,6 +63,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Close()
 		fmt.Fprintf(w, "server's database is closed")
 		fmt.Println(state)
+	case "HEART_BEAT":
+		fmt.Println("Heartbeat received from", r.RemoteAddr)
 	default:
 		fmt.Println("default")
 		fmt.Fprintf(w, "default")
@@ -74,5 +79,36 @@ func convertValToString(val interface{}) string {
 		return strconv.Itoa(v)
 	default:
 		return "Error converting value to string"
+	}
+}
+
+func sendHeartbeat() {
+	for {
+		time.Sleep(5000 * time.Millisecond)
+		fmt.Println("Sending heartbeat")
+		sendHeartBeatMessage()
+	}
+}
+
+func sendHeartBeatMessage() {
+	randomNum := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
+	appList := []string{"app1", "app2", "app3", "app4", "app5"}
+	url := "http://" + appList[randomNum] + ":8080/"
+	
+	fmt.Println("Sending heartbeat")
+
+	req, err := http.NewRequest("HEART_BEAT", url, nil)
+	if err != nil {
+		fmt.Println("Error creating request")
+	} else {
+		fmt.Println("Heartbeat request created")
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("Error sending heartbeat", err)
+	} else {
+		defer resp.Body.Close()
+		fmt.Println("Heartbeat sent to " + appList[randomNum])
 	}
 }
