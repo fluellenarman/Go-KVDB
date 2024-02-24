@@ -4,9 +4,9 @@ import (
 	"fmt"
 	data "here/dataStruct"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"strconv"
-	"math/rand"
 	"time"
 
 	"gopkg.in/mgo.v2/bson"
@@ -15,7 +15,7 @@ import (
 // Main is the main function for the kvStore
 func Main() {
 	fmt.Println("kvStore server runnning...")
-	go sendHeartbeat()
+	// go sendHeartbeat()
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 }
@@ -94,7 +94,7 @@ func sendHeartBeatMessage() {
 	randomNum := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
 	appList := []string{"app1", "app2", "app3", "app4", "app5"}
 	url := "http://" + appList[randomNum] + ":8080/"
-	
+
 	fmt.Println("Sending heartbeat")
 
 	req, err := http.NewRequest("HEART_BEAT", url, nil)

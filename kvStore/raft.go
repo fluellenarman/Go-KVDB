@@ -3,17 +3,21 @@ package kv
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type RaftState struct {
-	nodeName string
-	term     int
-	timeout  int
-	// votedFor string
-	log []LogEntry
+	nodeName         string
+	status           string
+	term             int
+	electionTimeout  int
+	heartbeatTimeout int
+	votedFor         string
+	log              []LogEntry
 }
 
 type LogEntry struct {
@@ -22,19 +26,81 @@ type LogEntry struct {
 }
 
 var state RaftState
+var currentElectionTimer = (time.Duration(state.electionTimeout) * time.Millisecond)
 
 func InitRaft() {
 	state = RaftState{
-		nodeName: "node1",
-		term:     0,
-		timeout:  100,
-		// votedFor: "",
-		log: []LogEntry{},
+		nodeName:         "node1",
+		status:           "follower",
+		term:             0,
+		electionTimeout:  getRandomNumber(), // 150-300ms
+		heartbeatTimeout: 100,
+		votedFor:         "",
+		log:              []LogEntry{},
 	}
 	fmt.Println("initRaft() state", state)
-	loadLogToMemory()
-	fmt.Println("loaded log to memory\n", state.log)
+	// loadLogToMemory()
+	// fmt.Println("loaded log to memory\n", state.log)
+	// heartBeatTimer()
+	fmt.Println("electionTimeout: " + strconv.Itoa(state.electionTimeout))
+	go electionTimer()
 }
+
+func electionTimer() {
+	for {
+		select {
+		case <-time.After(currentElectionTimer):
+			fmt.Println("Currently in state:", state.status)
+			if state.status == "follower" {
+				startElection()
+			} else if state.status == "candidate" {
+				countVotes()
+			} else if state.status == "leader" {
+				// sendHeartbeat()
+			}
+		}
+	}
+}
+
+func startElection() {
+	state.term++
+	state.votedFor = state.nodeName
+	state.status = "candidate"
+	// sendRequestVote()
+	resetElectionTimer()
+}
+
+func countVotes() {
+	// count votes from other nodes
+	// if majority votes, become leader
+
+	// else, transition back into follower
+	state.status = "follower"
+	// fmt.Println("lost election")
+	resetElectionTimer()
+}
+
+func resetElectionTimer() {
+	currentElectionTimer = (time.Duration(state.electionTimeout) * time.Millisecond)
+	// fmt.Println("resetElectionTimer() currentElectionTimer", currentElectionTimer)
+}
+
+func getRandomNumber() int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(151) + 150
+}
+
+// func heartBeatTimer() {
+// 	for {
+// 		select {
+// 		case <-time.After(time.Duration(state.heartbeatTimeout) * time.Millisecond):
+// 			fmt.Println("Sending heartbeat")
+// 			// sendHeartbeat()
+// 		}
+// 	}
+// }
+
+// Ignore Below for now //
 
 func appendLogEntry(command string) {
 	var entry = LogEntry{
