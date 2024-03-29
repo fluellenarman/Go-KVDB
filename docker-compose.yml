@@ -7,6 +7,7 @@ services:
       - "8080:8080"
     environment:
       - PORT=8080
+      - NAME=app1
 
   app2:
     build: .
@@ -14,6 +15,7 @@ services:
       - "8081:8080"
     environment:
       - PORT=8081
+      - NAME=app2
 
   app3:
     build: .
@@ -21,6 +23,7 @@ services:
       - "8082:8080"
     environment:
       - PORT=8082
+      - NAME=app3
 
   app4:
     build: .
@@ -28,6 +31,7 @@ services:
       - "8083:8080"
     environment:
       - PORT=8083
+      - NAME=app4
 
   app5:
     build: .
@@ -35,3 +39,4 @@ services:
       - "8084:8080"
     environment:
       - PORT=8084
+      - NAME=app5

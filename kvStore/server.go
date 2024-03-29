@@ -6,8 +6,11 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
+
+	"encoding/json"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -16,13 +19,14 @@ import (
 func Main() {
 	fmt.Println("kvStore server runnning...")
 	// go sendHeartbeat()
+	port := os.Getenv("PORT")
+	fmt.Println("port:", port)
+
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("Server->", r)
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("Error reading request body:", err)
@@ -32,12 +36,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	var data data.KVpair
 	bson.Unmarshal(body, &data)
+
 	fmt.Println("server.go: r->", r.Method)
 	switch r.Method {
 	case http.MethodGet:
 		fmt.Println("GET")
 		val, exists := Get(data.Key)
-		if exists != true {
+		if !exists {
 			fmt.Fprintf(w, "Key does not exist")
 		} else {
 			fmt.Println("server.go: key exists")
@@ -65,6 +70,24 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(state)
 	case "HEART_BEAT":
 		fmt.Println("Heartbeat received from", r.RemoteAddr)
+	case "VOTE_REQUEST":
+		// fmt.Println("Request vote received from", string(body))
+		ResetElectionTimer()
+		var voteRequest RequestVote
+		err := json.Unmarshal(body, &voteRequest)
+		if err != nil {
+			fmt.Println("Error unmarshalling request vote")
+		}
+		fmt.Println("Request vote received", voteRequest)
+
+		SendVoteResponse(voteRequest)
+	case "VOTE_RESPONSE":
+		var voteResponse ResponseVote
+		err := json.Unmarshal(body, &voteResponse)
+		if err != nil {
+			fmt.Println("Error unmarshalling vote response")
+		}
+		fmt.Println("Vote response received from ", voteResponse.VoterId)
 	default:
 		fmt.Println("default")
 		fmt.Fprintf(w, "default")
