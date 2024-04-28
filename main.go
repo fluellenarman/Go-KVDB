@@ -9,7 +9,6 @@ import (
 	kv "here/kvStore"
 	client "here/testClient"
 	"os"
-	// client "here/testClient"
 )
 
 func main() {
@@ -22,6 +21,13 @@ func main() {
 	} else if os.Args[1] == "server" {
 		fmt.Println("Running server mode")
 		// fmt.Println(os.Args[2])
+		os.Setenv("IS_LOCAL", "false")
+		serverMode()
+	} else if os.Args[1] == "localServer" {
+		fmt.Println("Running local server mode")
+		os.Setenv("PORT", "8080")
+		os.Setenv("NAME", "app1")
+		os.Setenv("IS_LOCAL", "true")
 		serverMode()
 	} else {
 		printError()

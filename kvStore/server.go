@@ -4,13 +4,9 @@ import (
 	"fmt"
 	data "here/dataStruct"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
-	"time"
-
-	"encoding/json"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -68,26 +64,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Close()
 		fmt.Fprintf(w, "server's database is closed")
 		fmt.Println(state)
-	case "HEART_BEAT":
-		fmt.Println("Heartbeat received from", r.RemoteAddr)
-	case "VOTE_REQUEST":
-		// fmt.Println("Request vote received from", string(body))
-		ResetElectionTimer()
-		var voteRequest RequestVote
-		err := json.Unmarshal(body, &voteRequest)
-		if err != nil {
-			fmt.Println("Error unmarshalling request vote")
-		}
-		fmt.Println("Request vote received", voteRequest)
-
-		SendVoteResponse(voteRequest)
-	case "VOTE_RESPONSE":
-		var voteResponse ResponseVote
-		err := json.Unmarshal(body, &voteResponse)
-		if err != nil {
-			fmt.Println("Error unmarshalling vote response")
-		}
-		fmt.Println("Vote response received from ", voteResponse.VoterId)
 	default:
 		fmt.Println("default")
 		fmt.Fprintf(w, "default")
@@ -102,36 +78,5 @@ func convertValToString(val interface{}) string {
 		return strconv.Itoa(v)
 	default:
 		return "Error converting value to string"
-	}
-}
-
-func sendHeartbeat() {
-	for {
-		time.Sleep(5000 * time.Millisecond)
-		fmt.Println("Sending heartbeat")
-		sendHeartBeatMessage()
-	}
-}
-
-func sendHeartBeatMessage() {
-	randomNum := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
-	appList := []string{"app1", "app2", "app3", "app4", "app5"}
-	url := "http://" + appList[randomNum] + ":8080/"
-
-	fmt.Println("Sending heartbeat")
-
-	req, err := http.NewRequest("HEART_BEAT", url, nil)
-	if err != nil {
-		fmt.Println("Error creating request")
-	} else {
-		fmt.Println("Heartbeat request created")
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		fmt.Println("Error sending heartbeat", err)
-	} else {
-		defer resp.Body.Close()
-		fmt.Println("Heartbeat sent to " + appList[randomNum])
 	}
 }
