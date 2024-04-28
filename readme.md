@@ -1,19 +1,7 @@
 # Go KVDB
 
-This is an implementation of a hash based key-value database that is written in Go.
+This is an implementation of a distributed key-value database that uses a custom implementation of Raft Consensus to achieve byzantine fault tolerance.
 
-In addition, I also plan on implementing Raft Consensus to make it a fault tolerant distributed key-value database
-
-## Goals
-1. Create a key value store in Go
-    - Hashmap implementation
-    - Persist data in binary JSON
-
-2. implement Raft Consensus to make it a distributed database
-
-3. Optional Goals
-    - Concurrent/prevent race conditions
-    - Transaction based Atomicity
 ## How to run
 ### client mode
 This will start the CLI client. The CLI client will take commands to send to the database.
@@ -78,21 +66,13 @@ go test ./kvStore/
 ```
 
 ## Todo
+- Look into edge cases for leader election
+- Implement log replication
 - create a test system for the client to do large amounts of operations to the database.
     - This is for eventually testing fault tolerance of a distributed kv-store.
-- Create an API for the KVstore for CRUD interoperability
 - implement snapshots, for writing data in memory to storage.
-- implement atomic transactions
 - implement Raft Consensus Algorithm
     - Dockerize multiple instances of the server and have them communicate with each other.
-
-### Operations, initializations and destruction
-- Initialize, open file when application starts
-- load BSON file into memory. 
-    - Will result in string keys, any datatype.
-    - While file is in memory, do operations
-- Close file when application ends
-    - Serialize data into bson
 
 ## Changelog
 ### 4/27/2024
