@@ -95,6 +95,13 @@ go test ./kvStore/
     - Serialize data into bson
 
 ## Changelog
+### 4/27/2024
+- Implemented Leader Election using RPC
+- refactored raft.go and server.go
+    - Deleted some structs that weren't needed
+    - implemented RequestVoteRPC and AppendEntriesRPC
+- Look into some edge cases for leader elections.
+
 ### 2/11/2024
 - Created a docker-compose.yml file
     - to build and run multiple docker containers, it's `docker compose up -d`
